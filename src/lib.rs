@@ -11,25 +11,21 @@ mod tests {
     fn should_render_path() {
         let mut path_commands: Vec<Box<dyn path::command::Command>> = vec![
             Box::new(path::command::MoveTo {
-                x: 0_f64,
-                y: 0_f64,
+                point: (0_f64, 0_f64),
                 coordinate_type: path::command::CoordinateType::Absolute,
             }),
             Box::new(path::command::LineTo {
-                x: 10.0,
-                y: 0.0,
+                point: (10.0, 0.0),
                 option: path::command::LineToOption::Default,
                 coordinate_type: path::command::CoordinateType::Relative,
             }),
             Box::new(path::command::LineTo {
-                x: 0.0,
-                y: 10.0,
+                point: (0.0, 10.0),
                 option: path::command::LineToOption::Default,
                 coordinate_type: path::command::CoordinateType::Relative,
             }),
             Box::new(path::command::LineTo {
-                x: -10.0,
-                y: 0.0,
+                point: (-10.0, 0.0),
                 option: path::command::LineToOption::Default,
                 coordinate_type: path::command::CoordinateType::Relative,
             }),
