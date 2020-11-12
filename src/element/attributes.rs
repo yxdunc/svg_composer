@@ -1,3 +1,4 @@
+use crate::path::command::Commands;
 use std::fmt;
 
 #[derive(Copy, Clone)]
@@ -64,17 +65,17 @@ pub struct Color {
 
 impl Color {
     pub fn from_rgba(r: u8, g: u8, b: u8, a: u8) -> Self {
-        return Color {
+        Color {
             _value: _Color { rgba: (r, g, b, a) },
             _value_type: _ColorType::RGBA,
-        };
+        }
     }
 
     pub fn from_name(name: ColorName) -> Self {
-        return Color {
+        Color {
             _value: _Color { name },
             _value_type: _ColorType::Name,
-        };
+        }
     }
 }
 
@@ -119,16 +120,16 @@ pub struct PaintServer {
 
 impl PaintServer {
     pub fn from_gradient(gradient: Gradient) -> Self {
-        return PaintServer {
+        PaintServer {
             _value: _PaintServer { gradient },
             _value_type: _PaintServerType::Gradient,
-        };
+        }
     }
     pub fn from_pattern(pattern: Pattern) -> Self {
-        return PaintServer {
+        PaintServer {
             _value: _PaintServer { pattern },
             _value_type: _PaintServerType::Pattern,
-        };
+        }
     }
 }
 
@@ -182,6 +183,87 @@ impl fmt::Display for Paint {
     }
 }
 
+enum _NumberType {
+    Ratio,
+    Length,
+}
+
+union _Number {
+    ratio: f32,
+    length: u32,
+}
+
+pub struct StrokeWidth {
+    _value: _Number,
+    _value_type: _NumberType,
+}
+
+impl StrokeWidth {
+    pub fn from_percentage(p: f32) -> Self {
+        StrokeWidth {
+            _value: _Number { ratio: p / 100.0 },
+            _value_type: _NumberType::Ratio,
+        }
+    }
+
+    pub fn from_ratio(r: f32) -> Self {
+        StrokeWidth {
+            _value: _Number { ratio: r },
+            _value_type: _NumberType::Ratio,
+        }
+    }
+
+    pub fn from_length(l: u32) -> Self {
+        StrokeWidth {
+            _value: _Number { length: l },
+            _value_type: _NumberType::Length,
+        }
+    }
+}
+
+impl fmt::Display for StrokeWidth {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let value = match self._value_type {
+            _NumberType::Ratio => unsafe { format!("{}%", self._value.ratio * 100.0) },
+            _NumberType::Length => unsafe { self._value.length.to_string() },
+        };
+        write!(f, "{}", value)
+    }
+}
+
+#[derive(Default)]
 pub struct Attributes {
-    pub stroke: Paint,
+    // All elements
+    pub id: Option<String>,
+    pub stroke: Option<Paint>,
+    pub stroke_width: Option<StrokeWidth>,
+    pub fill: Option<Paint>,
+
+    // Path
+    pub d: Option<Commands>,
+}
+
+impl fmt::Display for Attributes {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let test = self.id.as_ref().and_then(|x| Some(format!("id={}", x)));
+        let formatted_attributes: String = vec![
+            self.id.as_ref().and_then(|x| Some(format!("id=\"{}\"", x))),
+            self.stroke
+                .as_ref()
+                .and_then(|x| Some(format!("stroke=\"{}\"", x))),
+            self.stroke_width
+                .as_ref()
+                .and_then(|x| Some(format!("strokeWidth=\"{}\"", x))),
+            self.fill
+                .as_ref()
+                .and_then(|x| Some(format!("fill=\"{}\"", x))),
+            self.d.as_ref().and_then(|x| Some(format!("d=\"{}\"", x))),
+        ]
+        .iter()
+        .filter(|x| x.is_some())
+        .map(|x| x.clone().unwrap())
+        .collect::<Vec<String>>()
+        .join(" ");
+        write!(f, "{}", formatted_attributes)
+    }
 }

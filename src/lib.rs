@@ -31,9 +31,9 @@ mod tests {
             }),
         ];
         let paths: Vec<Box<dyn Element>> = vec![Box::new(
-            path::Path::new("path_1").add_commands(&mut path_commands),
+            path::Path::new("path_1").add_commands(path_commands),
         )];
         let document = document::Document::new(paths, None, None, None, None);
-        assert_eq!(document.render(), "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 100 100\">\n<path d=\"M0 0 l10 0 l0 10 l-10 0\" id=\"path_1\"/>\n</svg>\n");
+        assert_eq!(document.render(), "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 100 100\">\n<path id=\"path_1\" d=\"M0 0 l10 0 l0 10 l-10 0\"/>\n</svg>\n");
     }
 }
