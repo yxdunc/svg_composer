@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+mod attributes;
+
 pub trait Element {
     fn get_mut_attributes(&mut self) -> &mut HashMap<String, String>;
     fn get_attributes(&self) -> HashMap<String, String>;

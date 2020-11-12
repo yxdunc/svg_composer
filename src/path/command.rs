@@ -10,7 +10,7 @@ pub enum LineToOption {
 }
 
 pub trait Command {
-    fn svg_repr(&self) -> String;
+    fn to_svg_repr(&self) -> String;
 }
 
 pub struct MoveTo {
@@ -19,7 +19,7 @@ pub struct MoveTo {
 }
 
 impl Command for MoveTo {
-    fn svg_repr(&self) -> String {
+    fn to_svg_repr(&self) -> String {
         let cmd_letter = match self.coordinate_type {
             CoordinateType::Absolute => 'M',
             CoordinateType::Relative => 'm',
@@ -35,7 +35,7 @@ pub struct LineTo {
 }
 
 impl Command for LineTo {
-    fn svg_repr(&self) -> String {
+    fn to_svg_repr(&self) -> String {
         let cmd_letter: char = match self.option {
             LineToOption::Default => 'l',
             LineToOption::Horizontal => 'h',
@@ -63,7 +63,7 @@ pub struct CubicBezierCurve {
 }
 
 impl Command for CubicBezierCurve {
-    fn svg_repr(&self) -> String {
+    fn to_svg_repr(&self) -> String {
         if let Some(control_point_1) = self.control_point_1 {
             let cmd_letter: char = match self.coordinate_type {
                 CoordinateType::Absolute => 'C',
@@ -103,7 +103,7 @@ pub struct QuadraticBezierCurve {
 }
 
 impl Command for QuadraticBezierCurve {
-    fn svg_repr(&self) -> String {
+    fn to_svg_repr(&self) -> String {
         if let Some(control_point_1) = self.control_point_1 {
             let cmd_letter: char = match self.coordinate_type {
                 CoordinateType::Absolute => 'Q',
@@ -152,7 +152,7 @@ impl Arc {
 }
 
 impl Command for Arc {
-    fn svg_repr(&self) -> String {
+    fn to_svg_repr(&self) -> String {
         let cmd_letter: char = match self.coordinate_type {
             CoordinateType::Absolute => 'A',
             CoordinateType::Relative => 'a',
@@ -174,7 +174,7 @@ impl Command for Arc {
 pub struct End {}
 
 impl Command for End {
-    fn svg_repr(&self) -> String {
+    fn to_svg_repr(&self) -> String {
         'Z'.to_string()
     }
 }
@@ -189,12 +189,12 @@ mod tests {
             point: (3.14, 42.0),
             coordinate_type: CoordinateType::Absolute,
         }
-        .svg_repr();
+        .to_svg_repr();
         let cmd_rel = MoveTo {
             point: (3.14, 42.0),
             coordinate_type: CoordinateType::Relative,
         }
-        .svg_repr();
+        .to_svg_repr();
         assert_eq!(cmd_abs, "M3.14 42");
         assert_eq!(cmd_rel, "m3.14 42");
     }
@@ -206,25 +206,25 @@ mod tests {
             option: LineToOption::Default,
             coordinate_type: CoordinateType::Absolute,
         }
-        .svg_repr();
+        .to_svg_repr();
         let cmd_rel = LineTo {
             point: (3.14, 42.0),
             option: LineToOption::Default,
             coordinate_type: CoordinateType::Relative,
         }
-        .svg_repr();
+        .to_svg_repr();
         let cmd_vertical = LineTo {
             point: (3.14, 42.0),
             option: LineToOption::Vertical,
             coordinate_type: CoordinateType::Absolute,
         }
-        .svg_repr();
+        .to_svg_repr();
         let cmd_horizontal = LineTo {
             point: (3.14, 42.0),
             option: LineToOption::Horizontal,
             coordinate_type: CoordinateType::Absolute,
         }
-        .svg_repr();
+        .to_svg_repr();
         assert_eq!(cmd_abs, "L3.14 42");
         assert_eq!(cmd_rel, "l3.14 42");
         assert_eq!(cmd_vertical, "V42");
@@ -238,21 +238,21 @@ mod tests {
             control_point_2: (1.0, 3.0),
             coordinate_type: CoordinateType::Absolute,
         }
-        .svg_repr();
+        .to_svg_repr();
         let cmd_rel = CubicBezierCurve {
             point: (3.14, 42.0),
             control_point_1: None,
             control_point_2: (1.0, 3.0),
             coordinate_type: CoordinateType::Relative,
         }
-        .svg_repr();
+        .to_svg_repr();
         let cmd_two_controls = CubicBezierCurve {
             point: (3.14, 42.0),
             control_point_1: Some((4.0, 5.0)),
             control_point_2: (1.0, 3.0),
             coordinate_type: CoordinateType::Relative,
         }
-        .svg_repr();
+        .to_svg_repr();
         assert_eq!(cmd_abs, "S1 3 3.14 42");
         assert_eq!(cmd_rel, "s1 3 3.14 42");
         assert_eq!(cmd_two_controls, "c4 5 1 3 3.14 42");
@@ -264,19 +264,19 @@ mod tests {
             control_point_1: Some((3.0, 4.0)),
             coordinate_type: CoordinateType::Absolute,
         }
-        .svg_repr();
+        .to_svg_repr();
         let cmd_rel = QuadraticBezierCurve {
             point: (3.14, 42.0),
             control_point_1: Some((3.0, 4.0)),
             coordinate_type: CoordinateType::Relative,
         }
-        .svg_repr();
+        .to_svg_repr();
         let cmd_no_control = QuadraticBezierCurve {
             point: (3.14, 42.0),
             control_point_1: None,
             coordinate_type: CoordinateType::Absolute,
         }
-        .svg_repr();
+        .to_svg_repr();
         assert_eq!(cmd_abs, "Q3 4 3.14 42");
         assert_eq!(cmd_rel, "q3 4 3.14 42");
         assert_eq!(cmd_no_control, "T3.14 42");
@@ -291,7 +291,7 @@ mod tests {
             point: (3.14, 42.0),
             coordinate_type: CoordinateType::Absolute,
         }
-        .svg_repr();
+        .to_svg_repr();
         let cmd_rel = Arc {
             radius: (5.0, 5.0),
             x_axis_rotation: 0.0,
@@ -300,7 +300,7 @@ mod tests {
             point: (3.14, 42.0),
             coordinate_type: CoordinateType::Relative,
         }
-        .svg_repr();
+        .to_svg_repr();
         assert_eq!(cmd_abs, "A5 5 0 0 0 3.14 42");
         assert_eq!(cmd_rel, "a5 5 0 0 0 3.14 42");
     }

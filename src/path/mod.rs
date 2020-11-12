@@ -28,7 +28,7 @@ impl Path {
     fn _get_serialized_commands(&self) -> String {
         self.commands
             .iter()
-            .map(|cmd| cmd.svg_repr())
+            .map(|cmd| cmd.to_svg_repr())
             .collect::<Vec<String>>()
             .join(" ")
     }
