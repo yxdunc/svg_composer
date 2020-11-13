@@ -1,7 +1,9 @@
 use crate::element::attributes::Attributes;
 use std::collections::HashMap;
 
+pub use path::Path;
 pub mod attributes;
+pub mod path;
 
 pub trait Element {
     fn get_mut_attributes(&mut self) -> &mut Attributes;

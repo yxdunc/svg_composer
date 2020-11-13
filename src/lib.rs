@@ -1,15 +1,16 @@
 pub mod document;
 pub mod element;
-pub mod path;
 
 #[cfg(test)]
 mod tests {
+    use crate::document;
+    use crate::element;
+    use crate::element::path;
     use crate::element::Element;
-    use crate::{document, path};
 
     #[test]
     fn should_render_path() {
-        let mut path_commands: Vec<Box<dyn path::command::Command>> = vec![
+        let mut path_commands: Vec<Box<dyn path::Command>> = vec![
             Box::new(path::command::MoveTo {
                 point: (0_f64, 0_f64),
                 coordinate_type: path::command::CoordinateType::Absolute,
@@ -31,9 +32,9 @@ mod tests {
             }),
         ];
         let paths: Vec<Box<dyn Element>> = vec![Box::new(
-            path::Path::new("path_1").add_commands(path_commands),
+            element::path::Path::new("path_1").add_commands(path_commands),
         )];
         let document = document::Document::new(paths, None, None, None, None);
-        assert_eq!(document.render(), "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 100 100\">\n<path id=\"path_1\" d=\"M0 0 l10 0 l0 10 l-10 0\"/>\n</svg>\n");
+        assert_eq!(document.render(), "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 100 100\">\n<element.path id=\"path_1\" d=\"M0 0 l10 0 l0 10 l-10 0\"/>\n</svg>\n");
     }
 }

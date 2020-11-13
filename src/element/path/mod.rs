@@ -1,6 +1,6 @@
 use crate::element::attributes::Attributes;
+pub use crate::element::path::command::{Command, Commands};
 use crate::element::Element;
-use crate::path::command::{Command, Commands};
 
 pub mod command;
 
@@ -42,6 +42,6 @@ impl Element for Path {
         return &self.attributes;
     }
     fn tag_name(&self) -> String {
-        "path".to_string()
+        "element.path".to_string()
     }
 }

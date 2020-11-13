@@ -1,4 +1,4 @@
-use crate::path::command::Commands;
+use crate::element::path::command::Commands;
 use std::fmt;
 
 #[derive(Copy, Clone)]
