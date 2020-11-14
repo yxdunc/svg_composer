@@ -231,6 +231,8 @@ impl fmt::Display for StrokeWidth {
     }
 }
 
+/// A container for attributes of any SVG element
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
 #[derive(Default)]
 pub struct Attributes {
     // All elements

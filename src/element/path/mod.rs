@@ -8,10 +8,32 @@ pub struct Path {
     attributes: Attributes,
 }
 
+/// SVG path element
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path
+///
+/// # Examples
+///
+/// ```
+/// use svg_composer::element::Path;
+/// use svg_composer::element::path::command::{LineTo, CoordinateType, LineToOption, MoveTo, End};
+/// use svg_composer::element::path::Command;
+///
+/// let path = Path::new().set_name("my_path").add_commands(vec![
+///     Box::new(MoveTo{
+///         point: (0.0, 0.0),
+///         coordinate_type: CoordinateType::Absolute,
+///     }),
+///      Box::new(LineTo{
+///         point:(10.0, 10.0),
+///         option: LineToOption::Default,
+///         coordinate_type: CoordinateType::Absolute,
+///     }),
+///      Box::new(End{}),
+/// ]);
+/// ```
 impl Path {
-    pub fn new(name: &str) -> Path {
+    pub fn new() -> Path {
         let mut attributes = Attributes::default();
-        attributes.id = Some(name.to_string());
         attributes.d = Some(Commands {
             commands: Vec::<Box<dyn Command>>::new(),
         });

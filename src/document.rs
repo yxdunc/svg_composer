@@ -3,6 +3,7 @@ use crate::element::Element;
 static XMLNS_DEFAULT: &'static str = "http://www.w3.org/2000/svg";
 static XMLNS_XLINK_DEFAULT: &'static str = "http://www.w3.org/1999/xlink";
 
+/// Represent an entire SVG document
 pub struct Document {
     xmlns: String,
     xmlns_xlink: String,
@@ -12,20 +13,26 @@ pub struct Document {
 }
 
 impl Document {
-    pub fn new(
-        elements: Vec<Box<dyn Element>>,
-        xmlns: Option<String>,
-        xmlns_xlink: Option<String>,
-        view_port: Option<[f32; 2]>,
-        view_box: Option<[f32; 4]>,
-    ) -> Document {
+    /// Returns a Document
+    ///
+    /// # Arguments
+    ///
+    /// * `elements` - The list SVG elements constituting the Document
+    /// * `view_box` - The dimensions of the view box
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use svg_composer::document::Document;
+    /// use svg_composer::element::Element;
+    /// let document = Document::new(Vec::<Box<dyn Element>>::new(), None);
+    /// ```
+    pub fn new(elements: Vec<Box<dyn Element>>, view_box: Option<[f32; 4]>) -> Document {
         Document {
-            xmlns: xmlns.or(Some(XMLNS_DEFAULT.to_string())).unwrap(),
-            xmlns_xlink: xmlns_xlink
-                .or(Some(XMLNS_XLINK_DEFAULT.to_string()))
-                .unwrap(),
+            xmlns: XMLNS_DEFAULT.to_string(),
+            xmlns_xlink: XMLNS_XLINK_DEFAULT.to_string(),
             view_box: view_box.or(Some([0.0_f32, 0.0_f32, 100.0_f32, 100.0_f32])),
-            view_port,
+            view_port: None,
             elements,
         }
     }
@@ -64,7 +71,7 @@ impl Document {
         let elements = self
             .elements
             .iter()
-            .map(|e| e.render())
+            .map(ToString::to_string)
             .collect::<Vec<String>>()
             .join("\n");
 
@@ -86,7 +93,7 @@ mod tests {
 
     #[test]
     fn should_render_simple() {
-        let document = Document::new(Vec::<Box<dyn Element>>::new(), None, None, None, None);
+        let document = Document::new(Vec::<Box<dyn Element>>::new(), None);
         assert_eq!(document.render(), "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 100 100\">\n</svg>\n");
     }
 }
