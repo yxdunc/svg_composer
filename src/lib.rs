@@ -7,8 +7,6 @@ mod tests {
     use crate::element;
     use crate::element::path;
     use crate::element::Element;
-    use std::borrow::Borrow;
-    use std::ops::Deref;
 
     #[test]
     fn should_render_path() {
