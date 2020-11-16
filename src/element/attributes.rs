@@ -1,4 +1,5 @@
 use crate::element::path::command::Commands;
+use log::warn;
 use std::fmt;
 
 #[derive(Copy, Clone)]
@@ -188,34 +189,32 @@ enum _NumberType {
     Length,
 }
 
-union _Number {
-    ratio: f32,
-    length: u32,
-}
-
 pub struct StrokeWidth {
-    _value: _Number,
+    _value: f32,
     _value_type: _NumberType,
 }
 
 impl StrokeWidth {
     pub fn from_percentage(p: f32) -> Self {
         StrokeWidth {
-            _value: _Number { ratio: p / 100.0 },
+            _value: p / 100.0,
             _value_type: _NumberType::Ratio,
         }
     }
 
     pub fn from_ratio(r: f32) -> Self {
         StrokeWidth {
-            _value: _Number { ratio: r },
+            _value: r,
             _value_type: _NumberType::Ratio,
         }
     }
 
-    pub fn from_length(l: u32) -> Self {
+    pub fn from_length(l: f32) -> Self {
+        if l < 0.0 {
+            warn!("Using a negative number to define width.")
+        }
         StrokeWidth {
-            _value: _Number { length: l },
+            _value: l,
             _value_type: _NumberType::Length,
         }
     }
@@ -224,8 +223,8 @@ impl StrokeWidth {
 impl fmt::Display for StrokeWidth {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let value = match self._value_type {
-            _NumberType::Ratio => unsafe { format!("{}%", self._value.ratio * 100.0) },
-            _NumberType::Length => unsafe { self._value.length.to_string() },
+            _NumberType::Ratio => unsafe { format!("{}%", self._value * 100.0) },
+            _NumberType::Length => unsafe { self._value.to_string() },
         };
         write!(f, "{}", value)
     }

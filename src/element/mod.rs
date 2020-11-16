@@ -1,6 +1,7 @@
-use crate::element::attributes::Attributes;
+use crate::element::attributes::{Attributes, Paint, StrokeWidth};
 use std::collections::HashMap;
 
+use crate::element::path::command::End;
 pub use path::Path;
 use std::fmt;
 use std::fmt::Formatter;
@@ -23,6 +24,34 @@ pub trait Element {
     /// If the returned value is None the element will just have a opening tag of the form <xxx/>
     fn tag_content(&self) -> Option<String> {
         None
+    }
+    fn set_id(mut self, value: &str) -> Self
+    where
+        Self: Sized,
+    {
+        self.get_mut_attributes().id = Some(value.to_string());
+        self
+    }
+    fn set_stroke(mut self, value: Paint) -> Self
+    where
+        Self: Sized,
+    {
+        self.get_mut_attributes().stroke = Some(value);
+        self
+    }
+    fn set_stroke_width(mut self, value: StrokeWidth) -> Self
+    where
+        Self: Sized,
+    {
+        self.get_mut_attributes().stroke_width = Some(value);
+        self
+    }
+    fn set_fill(mut self, value: Paint) -> Self
+    where
+        Self: Sized,
+    {
+        self.get_mut_attributes().fill = Some(value);
+        self
     }
 }
 

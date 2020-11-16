@@ -23,12 +23,12 @@ pub struct Path {
 ///         point: (0.0, 0.0),
 ///         coordinate_type: CoordinateType::Absolute,
 ///     }),
-///      Box::new(LineTo{
+///     Box::new(LineTo{
 ///         point:(10.0, 10.0),
 ///         option: LineToOption::Default,
 ///         coordinate_type: CoordinateType::Absolute,
 ///     }),
-///      Box::new(End{}),
+///     Box::new(End{}),
 /// ]);
 /// ```
 impl Path {
@@ -64,6 +64,6 @@ impl Element for Path {
         return &self.attributes;
     }
     fn tag_name(&self) -> String {
-        "element.path".to_string()
+        "path".to_string()
     }
 }

@@ -7,6 +7,8 @@ mod tests {
     use crate::element;
     use crate::element::path;
     use crate::element::Element;
+    use std::borrow::Borrow;
+    use std::ops::Deref;
 
     #[test]
     fn should_render_path() {
@@ -37,6 +39,6 @@ mod tests {
                 .add_commands(path_commands),
         )];
         let document = document::Document::new(paths, None);
-        assert_eq!(document.render(), "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 100 100\">\n<element.path id=\"path_1\" d=\"M0 0 l10 0 l0 10 l-10 0\"/>\n</svg>\n");
+        assert_eq!(document.render(), "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 100 100\">\n<path id=\"path_1\" d=\"M0 0 l10 0 l0 10 l-10 0\"/>\n</svg>\n");
     }
 }
