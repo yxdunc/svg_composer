@@ -37,6 +37,11 @@ impl Document {
         }
     }
 
+    pub fn add_element(mut self, element: Box<dyn Element>) -> Self {
+        self.elements.push(element);
+        self
+    }
+
     pub fn render(&self) -> String {
         let svg_args = vec![
             Some(format!("xmlns=\"{}\"", self.xmlns)),
