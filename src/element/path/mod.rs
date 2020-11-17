@@ -54,6 +54,19 @@ impl Path {
         }
         self
     }
+    pub fn add_command(mut self, mut command: Box<dyn command::Command>) -> Self {
+        match self.attributes.d {
+            Some(ref mut x) => {
+                x.commands.push(command);
+            }
+            None => {
+                self.attributes.d = Some(Commands {
+                    commands: vec![command],
+                });
+            }
+        }
+        self
+    }
 }
 
 impl Element for Path {
