@@ -1,5 +1,6 @@
 pub mod document;
 pub mod element;
+pub use document::Document;
 
 #[cfg(test)]
 mod tests {
