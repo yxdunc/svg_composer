@@ -7,6 +7,7 @@ use std::fmt;
 use std::fmt::Formatter;
 
 pub mod attributes;
+pub mod circle;
 pub mod path;
 
 /// Trait representing a SVG element

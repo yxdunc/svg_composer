@@ -242,6 +242,13 @@ pub struct Attributes {
 
     // Path
     pub d: Option<Commands>,
+
+    // Objects
+    pub cx: Option<f64>,
+    pub cy: Option<f64>,
+
+    // Circle
+    pub radius: Option<f64>,
 }
 
 impl fmt::Display for Attributes {
@@ -259,6 +266,11 @@ impl fmt::Display for Attributes {
                 .as_ref()
                 .and_then(|x| Some(format!("fill=\"{}\"", x))),
             self.d.as_ref().and_then(|x| Some(format!("d=\"{}\"", x))),
+            self.cx.as_ref().and_then(|x| Some(format!("cx=\"{}\"", x))),
+            self.cy.as_ref().and_then(|x| Some(format!("cy=\"{}\"", x))),
+            self.radius
+                .as_ref()
+                .and_then(|x| Some(format!("r=\"{}\"", x))),
         ]
         .iter()
         .filter(|x| x.is_some())
