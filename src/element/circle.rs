@@ -6,17 +6,17 @@ pub struct Circle {
 }
 
 impl Circle {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Circle {
             attributes: Attributes::default(),
         }
     }
-    fn set_pos(mut self, pos: (f64, f64)) -> Self {
+    pub fn set_pos(mut self, pos: (f64, f64)) -> Self {
         self.attributes.cx = Some(pos.0);
         self.attributes.cy = Some(pos.1);
         self
     }
-    fn set_radius(mut self, pos: (f64, f64)) -> Self {
+    pub fn set_radius(mut self, pos: (f64, f64)) -> Self {
         self.attributes.cx = Some(pos.0);
         self.attributes.cy = Some(pos.1);
         self
