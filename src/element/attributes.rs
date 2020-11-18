@@ -86,7 +86,7 @@ impl fmt::Display for Color {
             _ColorType::Name => unsafe { self._value.name.to_string() },
             _ColorType::RGBA => unsafe {
                 format!(
-                    "{} {} {} {}",
+                    "rgba({},{},{},{})",
                     self._value.rgba.0, self._value.rgba.1, self._value.rgba.2, self._value.rgba.3
                 )
             },
