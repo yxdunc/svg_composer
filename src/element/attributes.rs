@@ -261,7 +261,7 @@ impl fmt::Display for Attributes {
                 .and_then(|x| Some(format!("stroke=\"{}\"", x))),
             self.stroke_width
                 .as_ref()
-                .and_then(|x| Some(format!("strokeWidth=\"{}\"", x))),
+                .and_then(|x| Some(format!("stroke-width=\"{}\"", x))),
             self.fill
                 .as_ref()
                 .and_then(|x| Some(format!("fill=\"{}\"", x))),
