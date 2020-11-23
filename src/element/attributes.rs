@@ -230,6 +230,23 @@ impl fmt::Display for StrokeWidth {
     }
 }
 
+pub enum StrokeLineCap {
+    Round,
+    Butt,
+    Square,
+}
+
+impl fmt::Display for StrokeLineCap {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let line_cap = match *self {
+            StrokeLineCap::Round => "round",
+            StrokeLineCap::Butt => "butt",
+            StrokeLineCap::Square => "square",
+        };
+        write!(f, "{}", line_cap)
+    }
+}
+
 /// A container for attributes of any SVG element
 /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
 #[derive(Default)]
@@ -238,6 +255,7 @@ pub struct Attributes {
     pub id: Option<String>,
     pub stroke: Option<Paint>,
     pub stroke_width: Option<StrokeWidth>,
+    pub stroke_linecap: Option<StrokeLineCap>,
     pub fill: Option<Paint>,
 
     // Path
@@ -262,6 +280,9 @@ impl fmt::Display for Attributes {
             self.stroke_width
                 .as_ref()
                 .and_then(|x| Some(format!("stroke-width=\"{}\"", x))),
+            self.stroke_linecap
+                .as_ref()
+                .and_then(|x| Some(format!("stroke-linecap=\"{}\"", x))),
             self.fill
                 .as_ref()
                 .and_then(|x| Some(format!("fill=\"{}\"", x))),

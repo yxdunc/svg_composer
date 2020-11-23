@@ -1,4 +1,4 @@
-use crate::element::attributes::{Attributes, Paint, StrokeWidth};
+use crate::element::attributes::{Attributes, Paint, StrokeLineCap, StrokeWidth};
 use std::collections::HashMap;
 
 use crate::element::path::command::End;
@@ -45,6 +45,13 @@ pub trait Element {
         Self: Sized,
     {
         self.get_mut_attributes().stroke_width = Some(value);
+        self
+    }
+    fn set_stroke_linecap(mut self, value: StrokeLineCap) -> Self
+    where
+        Self: Sized,
+    {
+        self.get_mut_attributes().stroke_linecap = Some(value);
         self
     }
     fn set_fill(mut self, value: Paint) -> Self
