@@ -189,21 +189,21 @@ enum _NumberType {
     Length,
 }
 
-pub struct StrokeWidth {
+pub struct Size {
     _value: f64,
     _value_type: _NumberType,
 }
 
-impl StrokeWidth {
+impl Size {
     pub fn from_percentage(p: f64) -> Self {
-        StrokeWidth {
+        Size {
             _value: p / 100.0,
             _value_type: _NumberType::Ratio,
         }
     }
 
     pub fn from_ratio(r: f64) -> Self {
-        StrokeWidth {
+        Size {
             _value: r,
             _value_type: _NumberType::Ratio,
         }
@@ -213,14 +213,14 @@ impl StrokeWidth {
         if l < 0.0 {
             warn!("Using a negative number to define width.")
         }
-        StrokeWidth {
+        Size {
             _value: l,
             _value_type: _NumberType::Length,
         }
     }
 }
 
-impl fmt::Display for StrokeWidth {
+impl fmt::Display for Size {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let value = match self._value_type {
             _NumberType::Ratio => unsafe { format!("{}%", self._value * 100.0) },
@@ -254,18 +254,24 @@ pub struct Attributes {
     // All elements
     pub id: Option<String>,
     pub stroke: Option<Paint>,
-    pub stroke_width: Option<StrokeWidth>,
+    pub stroke_width: Option<Size>,
     pub stroke_linecap: Option<StrokeLineCap>,
     pub fill: Option<Paint>,
 
     // Path
     pub d: Option<Commands>,
 
-    // Objects
-    pub cx: Option<f64>,
-    pub cy: Option<f64>,
+    // Rectangle
+    pub width: Option<Size>,
+    pub height: Option<Size>,
+    pub rx: Option<f64>,
+    pub ry: Option<f64>,
+    pub x: Option<f64>,
+    pub y: Option<f64>,
 
     // Circle
+    pub cx: Option<f64>,
+    pub cy: Option<f64>,
     pub radius: Option<f64>,
 }
 
@@ -292,6 +298,16 @@ impl fmt::Display for Attributes {
             self.radius
                 .as_ref()
                 .and_then(|x| Some(format!("r=\"{}\"", x))),
+            self.x.as_ref().and_then(|x| Some(format!("x=\"{}\"", x))),
+            self.y.as_ref().and_then(|x| Some(format!("y=\"{}\"", x))),
+            self.rx.as_ref().and_then(|x| Some(format!("rx=\"{}\"", x))),
+            self.ry.as_ref().and_then(|x| Some(format!("ry=\"{}\"", x))),
+            self.width
+                .as_ref()
+                .and_then(|x| Some(format!("width=\"{}\"", x))),
+            self.height
+                .as_ref()
+                .and_then(|x| Some(format!("height=\"{}\"", x))),
         ]
         .iter()
         .filter(|x| x.is_some())

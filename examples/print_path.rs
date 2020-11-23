@@ -1,5 +1,5 @@
 use svg_composer::document::Document;
-use svg_composer::element::attributes::{Color, ColorName, Paint, StrokeWidth};
+use svg_composer::element::attributes::{Color, ColorName, Paint, Size};
 use svg_composer::element::path::command::{CoordinateType, End, LineTo, LineToOption, MoveTo};
 use svg_composer::element::{Element, Path};
 
@@ -8,7 +8,7 @@ fn main() {
         vec![Box::new(
             Path::new()
                 .set_stroke(Paint::from_color(Color::from_name(ColorName::Fuchsia)))
-                .set_stroke_width(StrokeWidth::from_length(10.0))
+                .set_stroke_width(Size::from_length(10.0))
                 .add_commands(vec![
                     Box::new(MoveTo {
                         point: (11., 1.),

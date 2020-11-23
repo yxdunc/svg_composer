@@ -1,4 +1,4 @@
-use crate::element::attributes::{Attributes, Paint, StrokeLineCap, StrokeWidth};
+use crate::element::attributes::{Attributes, Paint, Size, StrokeLineCap};
 use std::collections::HashMap;
 
 use crate::element::path::command::End;
@@ -9,6 +9,7 @@ use std::fmt::Formatter;
 pub mod attributes;
 pub mod circle;
 pub mod path;
+pub mod rect;
 
 /// Trait representing a SVG element
 /// Struct implementing this trait must not reimplement fmt::Display trait
@@ -40,7 +41,7 @@ pub trait Element {
         self.get_mut_attributes().stroke = Some(value);
         self
     }
-    fn set_stroke_width(mut self, value: StrokeWidth) -> Self
+    fn set_stroke_width(mut self, value: Size) -> Self
     where
         Self: Sized,
     {
