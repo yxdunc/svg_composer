@@ -190,26 +190,26 @@ enum _NumberType {
 }
 
 pub struct StrokeWidth {
-    _value: f32,
+    _value: f64,
     _value_type: _NumberType,
 }
 
 impl StrokeWidth {
-    pub fn from_percentage(p: f32) -> Self {
+    pub fn from_percentage(p: f64) -> Self {
         StrokeWidth {
             _value: p / 100.0,
             _value_type: _NumberType::Ratio,
         }
     }
 
-    pub fn from_ratio(r: f32) -> Self {
+    pub fn from_ratio(r: f64) -> Self {
         StrokeWidth {
             _value: r,
             _value_type: _NumberType::Ratio,
         }
     }
 
-    pub fn from_length(l: f32) -> Self {
+    pub fn from_length(l: f64) -> Self {
         if l < 0.0 {
             warn!("Using a negative number to define width.")
         }
