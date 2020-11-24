@@ -8,6 +8,7 @@ use std::fmt::Formatter;
 
 pub mod attributes;
 pub mod circle;
+pub mod line;
 pub mod path;
 pub mod rect;
 

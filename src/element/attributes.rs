@@ -269,6 +269,12 @@ pub struct Attributes {
     pub x: Option<f64>,
     pub y: Option<f64>,
 
+    // Line
+    pub x1: Option<f64>,
+    pub y1: Option<f64>,
+    pub x2: Option<f64>,
+    pub y2: Option<f64>,
+
     // Circle
     pub cx: Option<f64>,
     pub cy: Option<f64>,
@@ -300,6 +306,10 @@ impl fmt::Display for Attributes {
                 .and_then(|x| Some(format!("r=\"{}\"", x))),
             self.x.as_ref().and_then(|x| Some(format!("x=\"{}\"", x))),
             self.y.as_ref().and_then(|x| Some(format!("y=\"{}\"", x))),
+            self.x1.as_ref().and_then(|x| Some(format!("x1=\"{}\"", x))),
+            self.y1.as_ref().and_then(|x| Some(format!("y1=\"{}\"", x))),
+            self.x2.as_ref().and_then(|x| Some(format!("x2=\"{}\"", x))),
+            self.y2.as_ref().and_then(|x| Some(format!("y2=\"{}\"", x))),
             self.rx.as_ref().and_then(|x| Some(format!("rx=\"{}\"", x))),
             self.ry.as_ref().and_then(|x| Some(format!("ry=\"{}\"", x))),
             self.width
