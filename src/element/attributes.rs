@@ -247,6 +247,21 @@ impl fmt::Display for StrokeLineCap {
     }
 }
 
+pub enum LengthAdjust {
+    Spacing,
+    SpacingAndGlyphs,
+}
+
+impl fmt::Display for LengthAdjust {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let line_cap = match *self {
+            LengthAdjust::Spacing => "spacing",
+            LengthAdjust::SpacingAndGlyphs => "spacingAndGlyphs",
+        };
+        write!(f, "{}", line_cap)
+    }
+}
+
 /// A container for attributes of any SVG element
 /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
 #[derive(Default)]
@@ -279,6 +294,13 @@ pub struct Attributes {
     pub cx: Option<f64>,
     pub cy: Option<f64>,
     pub radius: Option<f64>,
+
+    // Text
+    pub text_length: Option<Size>,
+    pub length_adjust: Option<LengthAdjust>,
+    pub rotate_chars: Option<Vec<f64>>,
+    pub dx: Option<f64>,
+    pub dy: Option<f64>,
 }
 
 impl fmt::Display for Attributes {
@@ -312,12 +334,29 @@ impl fmt::Display for Attributes {
             self.y2.as_ref().and_then(|x| Some(format!("y2=\"{}\"", x))),
             self.rx.as_ref().and_then(|x| Some(format!("rx=\"{}\"", x))),
             self.ry.as_ref().and_then(|x| Some(format!("ry=\"{}\"", x))),
+            self.dx.as_ref().and_then(|x| Some(format!("dx=\"{}\"", x))),
+            self.dy.as_ref().and_then(|x| Some(format!("dy=\"{}\"", x))),
             self.width
                 .as_ref()
                 .and_then(|x| Some(format!("width=\"{}\"", x))),
             self.height
                 .as_ref()
                 .and_then(|x| Some(format!("height=\"{}\"", x))),
+            self.text_length
+                .as_ref()
+                .and_then(|x| Some(format!("textLength=\"{}\"", x))),
+            self.length_adjust
+                .as_ref()
+                .and_then(|x| Some(format!("lengthAdjust=\"{}\"", x))),
+            self.rotate_chars.as_ref().and_then(|x| {
+                Some(format!(
+                    "rotate=\"{}\"",
+                    x.iter()
+                        .map(|x| x.to_string())
+                        .collect::<Vec<String>>()
+                        .join(",")
+                ))
+            }),
         ]
         .iter()
         .filter(|x| x.is_some())

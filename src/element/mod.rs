@@ -11,6 +11,7 @@ pub mod circle;
 pub mod line;
 pub mod path;
 pub mod rect;
+pub mod text;
 
 /// Trait representing a SVG element
 /// Struct implementing this trait must not reimplement fmt::Display trait
