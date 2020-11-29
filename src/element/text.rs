@@ -3,12 +3,14 @@ use crate::element::Element;
 
 pub struct Text {
     attributes: Attributes,
+    value: String,
 }
 
 impl Text {
-    pub fn new() -> Self {
+    pub fn new(value: String) -> Self {
         Text {
             attributes: Attributes::default(),
+            value,
         }
     }
     pub fn set_pos(mut self, pos: (f64, f64)) -> Self {
@@ -48,5 +50,9 @@ impl Element for Text {
 
     fn tag_name(&self) -> String {
         "text".to_string()
+    }
+
+    fn tag_content(&self) -> Option<String> {
+        Some(self.value.clone())
     }
 }
