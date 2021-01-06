@@ -1,4 +1,4 @@
-use crate::element::attributes::{Attributes, Paint, Size, StrokeLineCap};
+use crate::element::attributes::{Attributes, ClassName, Paint, Size, StrokeLineCap};
 use std::collections::HashMap;
 
 use crate::element::path::command::End;
@@ -62,6 +62,13 @@ pub trait Element {
         Self: Sized,
     {
         self.get_mut_attributes().fill = Some(value);
+        self
+    }
+    fn set_classes(mut self, value: Vec<ClassName>) -> Self
+    where
+        Self: Sized,
+    {
+        self.get_mut_attributes().class = Some(value);
         self
     }
 }

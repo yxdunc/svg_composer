@@ -1,6 +1,8 @@
 use crate::element::path::command::Commands;
 use log::warn;
 use std::fmt;
+use std::io::Error;
+use std::str::Chars;
 
 #[derive(Copy, Clone)]
 pub enum ColorName {
@@ -92,6 +94,58 @@ impl fmt::Display for Color {
             },
         };
         write!(f, "{}", value)
+    }
+}
+
+#[derive(Clone)]
+pub struct ClassName {
+    _value: String,
+}
+
+impl ClassName {
+    pub fn from_string(str: String) -> Result<Self, String> {
+        if str.len() == 0 {
+            return Err("Empty strings do not conform with css class name standard".to_string());
+        }
+        let mut str_chars = str.chars();
+        Self::_is_first_char_valid(str_chars.next().unwrap())?;
+        Self::_are_following_chars_valid(str_chars)?;
+
+        Ok(ClassName { _value: str })
+    }
+    fn _is_first_char_valid(first_char: char) -> Result<(), String> {
+        match first_char {
+            'a'..='z' => Ok(()),
+            'A'..='Z' => Ok(()),
+            '-' | '_' => Ok(()),
+            _ => Err("First char does not conform with css class name standard".to_string()),
+        }
+    }
+    fn _are_following_chars_valid(chars: Chars) -> Result<(), String> {
+        let mut i = 1;
+
+        for c in chars {
+            match c {
+                'a'..='z' => (),
+                'A'..='Z' => (),
+                '-' | '_' => (),
+                '0'..='9' => (),
+                _ => {
+                    return Err(format!(
+                        "Char number {} does not conform with css class name standard",
+                        i
+                    ))
+                }
+            }
+            i += 1;
+        }
+        Ok(())
+    }
+}
+
+impl fmt::Display for ClassName {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self._value)
     }
 }
 
@@ -268,6 +322,7 @@ impl fmt::Display for LengthAdjust {
 pub struct Attributes {
     // All elements
     pub id: Option<String>,
+    pub class: Option<Vec<ClassName>>,
     pub stroke: Option<Paint>,
     pub stroke_width: Option<Size>,
     pub stroke_linecap: Option<StrokeLineCap>,
@@ -308,6 +363,15 @@ impl fmt::Display for Attributes {
         let test = self.id.as_ref().and_then(|x| Some(format!("id={}", x)));
         let formatted_attributes: String = vec![
             self.id.as_ref().and_then(|x| Some(format!("id=\"{}\"", x))),
+            self.class.as_ref().and_then(|x| {
+                Some(format!(
+                    "class=\"{}\"",
+                    x.iter()
+                        .map(|x| x.to_string())
+                        .collect::<Vec<String>>()
+                        .join(" ")
+                ))
+            }),
             self.stroke
                 .as_ref()
                 .and_then(|x| Some(format!("stroke=\"{}\"", x))),
