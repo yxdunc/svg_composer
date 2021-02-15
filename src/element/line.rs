@@ -1,6 +1,7 @@
 use crate::element::attributes::{Attributes, Size};
 use crate::element::Element;
 
+#[derive(Clone)]
 pub struct Line {
     attributes: Attributes,
 }

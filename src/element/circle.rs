@@ -1,6 +1,7 @@
 use crate::element::attributes::Attributes;
 use crate::element::Element;
 
+#[derive(Clone)]
 pub struct Circle {
     attributes: Attributes,
 }

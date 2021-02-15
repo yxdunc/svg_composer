@@ -2,6 +2,7 @@ use crate::element::attributes::{Attributes, ClassName, Paint, Size, StrokeLineC
 use std::collections::HashMap;
 
 use crate::element::path::command::End;
+use dyn_clone::DynClone;
 pub use path::Path;
 use std::fmt;
 use std::fmt::Formatter;
@@ -16,7 +17,7 @@ pub mod text;
 /// Trait representing a SVG element
 /// Struct implementing this trait must not reimplement fmt::Display trait
 /// https://developer.mozilla.org/en-US/docs/Web/SVG/Element
-pub trait Element {
+pub trait Element: DynClone {
     /// This method should return a mutable reference to the attribute field stored in the struct
     fn get_mut_attributes(&mut self) -> &mut Attributes;
     /// This method should return a reference to the attribute field stored in the struct
@@ -72,6 +73,8 @@ pub trait Element {
         self
     }
 }
+
+dyn_clone::clone_trait_object!(Element);
 
 impl fmt::Display for dyn Element {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {

@@ -1,6 +1,7 @@
 use crate::element::attributes::{Attributes, LengthAdjust, Size};
 use crate::element::Element;
 
+#[derive(Clone)]
 pub struct Text {
     attributes: Attributes,
     value: String,

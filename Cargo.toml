@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 log = "0.4.11"
+dyn-clone = "1.0.4"

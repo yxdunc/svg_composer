@@ -199,16 +199,19 @@ impl fmt::Display for PaintServer {
     }
 }
 
+#[derive(Copy, Clone)]
 union _Paint {
     color: Color,
     paint_server: PaintServer,
 }
 
+#[derive(Copy, Clone)]
 enum _PaintType {
     Color,
     PaintServer,
 }
 
+#[derive(Copy, Clone)]
 pub struct Paint {
     _value: _Paint,
     _value_type: _PaintType,
@@ -238,11 +241,13 @@ impl fmt::Display for Paint {
     }
 }
 
+#[derive(Copy, Clone)]
 enum _NumberType {
     Ratio,
     Length,
 }
 
+#[derive(Copy, Clone)]
 pub struct Size {
     _value: f64,
     _value_type: _NumberType,
@@ -284,6 +289,7 @@ impl fmt::Display for Size {
     }
 }
 
+#[derive(Copy, Clone)]
 pub enum StrokeLineCap {
     Round,
     Butt,
@@ -301,6 +307,7 @@ impl fmt::Display for StrokeLineCap {
     }
 }
 
+#[derive(Copy, Clone)]
 pub enum LengthAdjust {
     Spacing,
     SpacingAndGlyphs,
@@ -318,7 +325,7 @@ impl fmt::Display for LengthAdjust {
 
 /// A container for attributes of any SVG element
 /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct Attributes {
     // All elements
     pub id: Option<String>,

@@ -1,6 +1,8 @@
+use dyn_clone::DynClone;
 use std::fmt;
 
-pub trait Command: fmt::Display {}
+pub trait Command: fmt::Display + DynClone {}
+dyn_clone::clone_trait_object!(Command);
 impl Command for MoveTo {}
 impl Command for LineTo {}
 impl Command for CubicBezierCurve {}
@@ -8,6 +10,7 @@ impl Command for QuadraticBezierCurve {}
 impl Command for Arc {}
 impl Command for End {}
 
+#[derive(Clone)]
 pub struct Commands {
     pub commands: Vec<Box<dyn Command>>,
 }

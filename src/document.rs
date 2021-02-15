@@ -4,11 +4,12 @@ static XMLNS_DEFAULT: &'static str = "http://www.w3.org/2000/svg";
 static XMLNS_XLINK_DEFAULT: &'static str = "http://www.w3.org/1999/xlink";
 
 /// Represent an entire SVG document
+#[derive(Clone)]
 pub struct Document {
-    xmlns: String,
-    xmlns_xlink: String,
-    view_port: Option<[f32; 2]>,
-    view_box: Option<[f32; 4]>,
+    pub xmlns: String,
+    pub xmlns_xlink: String,
+    pub view_port: Option<[f32; 2]>,
+    pub view_box: Option<[f32; 4]>,
     elements: Vec<Box<dyn Element>>,
 }
 

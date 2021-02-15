@@ -4,6 +4,7 @@ use crate::element::Element;
 
 pub mod command;
 
+#[derive(Clone)]
 pub struct Path {
     attributes: Attributes,
 }
