@@ -50,12 +50,14 @@ impl fmt::Display for ColorName {
 
 #[derive(Copy, Clone)]
 union _Color {
+    rgb: (u8, u8, u8),
     rgba: (u8, u8, u8, u8),
     name: ColorName,
 }
 
 #[derive(Copy, Clone)]
 enum _ColorType {
+    RGB,
     RGBA,
     Name,
 }
@@ -67,6 +69,12 @@ pub struct Color {
 }
 
 impl Color {
+    pub fn from_rgb(r: u8, g: u8, b: u8) -> Self {
+        Color {
+            _value: _Color { rgb: (r, g, b) },
+            _value_type: _ColorType::RGB,
+        }
+    }
     pub fn from_rgba(r: u8, g: u8, b: u8, a: u8) -> Self {
         Color {
             _value: _Color { rgba: (r, g, b, a) },
@@ -86,6 +94,12 @@ impl fmt::Display for Color {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let value = match self._value_type {
             _ColorType::Name => unsafe { self._value.name.to_string() },
+            _ColorType::RGB => unsafe {
+                format!(
+                    "rgb({},{},{})",
+                    self._value.rgba.0, self._value.rgba.1, self._value.rgba.2
+                )
+            },
             _ColorType::RGBA => unsafe {
                 format!(
                     "rgba({},{},{},{})",
@@ -203,12 +217,14 @@ impl fmt::Display for PaintServer {
 union _Paint {
     color: Color,
     paint_server: PaintServer,
+    none: (),
 }
 
 #[derive(Copy, Clone)]
 enum _PaintType {
     Color,
     PaintServer,
+    None,
 }
 
 #[derive(Copy, Clone)]
@@ -218,6 +234,12 @@ pub struct Paint {
 }
 
 impl Paint {
+    pub fn new_empty() -> Self {
+        Paint {
+            _value: _Paint { none: () },
+            _value_type: _PaintType::None,
+        }
+    }
     pub fn from_color(color: Color) -> Self {
         return Paint {
             _value: _Paint { color },
@@ -232,6 +254,7 @@ impl Paint {
 impl fmt::Display for Paint {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let value = match self._value_type {
+            _PaintType::None => unsafe { "none".to_string() },
             _PaintType::Color => unsafe { self._value.color.to_string() },
             _PaintType::PaintServer => unsafe {
                 unimplemented!("Need to implement gradient and pattern");
