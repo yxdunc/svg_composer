@@ -1,4 +1,4 @@
-use crate::element::attributes::{Attributes, LengthAdjust, Size};
+use crate::element::attributes::{Attributes, LengthAdjust, Size, ToSize};
 use crate::element::Element;
 
 #[derive(Clone)]
@@ -14,15 +14,21 @@ impl Text {
             value,
         }
     }
-    pub fn set_pos(mut self, pos: (f64, f64)) -> Self {
-        self.attributes.x = Some(pos.0);
-        self.attributes.y = Some(pos.1);
+    pub fn set_pos<I>(mut self, pos: (I, I)) -> Self
+    where
+        I: ToSize,
+    {
+        self.attributes.x = Some(pos.0.to_size());
+        self.attributes.y = Some(pos.1.to_size());
         self
     }
     /// Set position relative to previous text element
-    pub fn set_relative_pos(mut self, pos: (f64, f64)) -> Self {
-        self.attributes.dx = Some(pos.0);
-        self.attributes.dy = Some(pos.1);
+    pub fn set_relative_pos<I>(mut self, pos: (I, I)) -> Self
+    where
+        I: ToSize,
+    {
+        self.attributes.dx = Some(pos.0.to_size());
+        self.attributes.dy = Some(pos.1.to_size());
         self
     }
     /// Set rotation for individual characters
@@ -30,8 +36,11 @@ impl Text {
         self.attributes.rotate_chars = Some(list_of_char_rotation);
         self
     }
-    pub fn set_length(mut self, len: Size) -> Self {
-        self.attributes.text_length = Some(len);
+    pub fn set_length<I>(mut self, len: I) -> Self
+    where
+        I: ToSize,
+    {
+        self.attributes.text_length = Some(len.to_size());
         self
     }
     pub fn set_length_adjust(mut self, adjust: LengthAdjust) -> Self {

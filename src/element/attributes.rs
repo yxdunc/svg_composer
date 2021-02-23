@@ -270,10 +270,26 @@ enum _NumberType {
     Length,
 }
 
+pub trait ToSize {
+    fn to_size(&self) -> Size;
+}
+
 #[derive(Copy, Clone)]
 pub struct Size {
     _value: f64,
     _value_type: _NumberType,
+}
+
+impl ToSize for f64 {
+    fn to_size(&self) -> Size {
+        Size::from_length(*self)
+    }
+}
+
+impl ToSize for Size {
+    fn to_size(&self) -> Size {
+        *self
+    }
 }
 
 impl Size {
@@ -293,7 +309,7 @@ impl Size {
 
     pub fn from_length(l: f64) -> Self {
         if l < 0.0 {
-            warn!("Using a negative number to define width.")
+            warn!("Using a negative number to define a Size")
         }
         Size {
             _value: l,
@@ -364,28 +380,28 @@ pub struct Attributes {
     // Rectangle
     pub width: Option<Size>,
     pub height: Option<Size>,
-    pub rx: Option<f64>,
-    pub ry: Option<f64>,
-    pub x: Option<f64>,
-    pub y: Option<f64>,
+    pub rx: Option<Size>,
+    pub ry: Option<Size>,
+    pub x: Option<Size>,
+    pub y: Option<Size>,
 
     // Line
-    pub x1: Option<f64>,
-    pub y1: Option<f64>,
-    pub x2: Option<f64>,
-    pub y2: Option<f64>,
+    pub x1: Option<Size>,
+    pub y1: Option<Size>,
+    pub x2: Option<Size>,
+    pub y2: Option<Size>,
 
     // Circle
-    pub cx: Option<f64>,
-    pub cy: Option<f64>,
-    pub radius: Option<f64>,
+    pub cx: Option<Size>,
+    pub cy: Option<Size>,
+    pub radius: Option<Size>,
 
     // Text
     pub text_length: Option<Size>,
     pub length_adjust: Option<LengthAdjust>,
     pub rotate_chars: Option<Vec<f64>>,
-    pub dx: Option<f64>,
-    pub dy: Option<f64>,
+    pub dx: Option<Size>,
+    pub dy: Option<Size>,
 }
 
 impl fmt::Display for Attributes {

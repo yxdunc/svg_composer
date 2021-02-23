@@ -1,4 +1,4 @@
-use crate::element::attributes::{Attributes, Size};
+use crate::element::attributes::{Attributes, Size, ToSize};
 use crate::element::Element;
 
 #[derive(Clone)]
@@ -12,14 +12,20 @@ impl Line {
             attributes: Attributes::default(),
         }
     }
-    pub fn set_point_1(mut self, p: (f64, f64)) -> Self {
-        self.attributes.x1 = Some(p.0);
-        self.attributes.y1 = Some(p.1);
+    pub fn set_point_1<I>(mut self, p: (I, I)) -> Self
+    where
+        I: ToSize,
+    {
+        self.attributes.x1 = Some(p.0.to_size());
+        self.attributes.y1 = Some(p.1.to_size());
         self
     }
-    pub fn set_point_2(mut self, p: (f64, f64)) -> Self {
-        self.attributes.x2 = Some(p.0);
-        self.attributes.y2 = Some(p.1);
+    pub fn set_point_2<I>(mut self, p: (I, I)) -> Self
+    where
+        I: ToSize,
+    {
+        self.attributes.x2 = Some(p.0.to_size());
+        self.attributes.y2 = Some(p.1.to_size());
         self
     }
 }

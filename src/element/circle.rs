@@ -1,4 +1,4 @@
-use crate::element::attributes::Attributes;
+use crate::element::attributes::{Attributes, Size, ToSize};
 use crate::element::Element;
 
 #[derive(Clone)]
@@ -12,13 +12,19 @@ impl Circle {
             attributes: Attributes::default(),
         }
     }
-    pub fn set_pos(mut self, pos: (f64, f64)) -> Self {
-        self.attributes.cx = Some(pos.0);
-        self.attributes.cy = Some(pos.1);
+    pub fn set_pos<I>(mut self, pos: (I, I)) -> Self
+    where
+        I: ToSize,
+    {
+        self.attributes.cx = Some(pos.0.to_size());
+        self.attributes.cy = Some(pos.1.to_size());
         self
     }
-    pub fn set_radius(mut self, radius: f64) -> Self {
-        self.attributes.radius = Some(radius);
+    pub fn set_radius<I>(mut self, radius: I) -> Self
+    where
+        I: ToSize,
+    {
+        self.attributes.radius = Some(radius.to_size());
         self
     }
 }
