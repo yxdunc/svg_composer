@@ -1,10 +1,11 @@
 use crate::element::path::command::Commands;
 use log::warn;
 use std::fmt;
+use std::fmt::{Debug, Formatter};
 use std::io::Error;
 use std::str::Chars;
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub enum ColorName {
     Aqua,
     Black,
@@ -66,6 +67,12 @@ enum _ColorType {
 pub struct Color {
     _value: _Color,
     _value_type: _ColorType,
+}
+
+impl Debug for Color {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self)
+    }
 }
 
 impl Color {
@@ -163,10 +170,10 @@ impl fmt::Display for ClassName {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct Gradient {/*TODO implement*/}
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct Pattern {/*TODO implement*/}
 
 #[derive(Copy, Clone)]
@@ -185,6 +192,12 @@ enum _PaintServerType {
 pub struct PaintServer {
     _value: _PaintServer,
     _value_type: _PaintServerType,
+}
+
+impl Debug for PaintServer {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self)
+    }
 }
 
 impl PaintServer {
@@ -231,6 +244,12 @@ enum _PaintType {
 pub struct Paint {
     _value: _Paint,
     _value_type: _PaintType,
+}
+
+impl Debug for Paint {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self)
+    }
 }
 
 impl Paint {
