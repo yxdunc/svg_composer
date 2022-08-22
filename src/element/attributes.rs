@@ -2,7 +2,6 @@ use crate::element::path::command::Commands;
 use log::warn;
 use std::fmt;
 use std::fmt::{Debug, Formatter};
-use std::io::Error;
 use std::str::Chars;
 
 #[derive(Copy, Clone, Debug)]
@@ -233,7 +232,7 @@ union _Paint {
     none: (),
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 enum _PaintType {
     Color,
     PaintServer,
