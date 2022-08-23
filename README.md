@@ -1,4 +1,5 @@
 # SVG Composer
+[![Latest version](https://img.shields.io/crates/v/svg_composer.svg)](https://crates.io/crates/svg_composer)
 
 A strongly typed [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG) composing library written in [Rust](https://www.rust-lang.org/). This library allows you to ensure the soundness of your generated SVGs at the compile time of your project.
 
