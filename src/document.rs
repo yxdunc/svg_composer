@@ -18,8 +18,8 @@ impl Document {
     ///
     /// # Arguments
     ///
-    /// * `elements` - The list SVG elements constituting the Document
-    /// * `view_box` - The dimensions of the view box
+    /// * `elements` - The list of SVG elements constituting the Document
+    /// * `view_box` - The dimensions of the view box (minx, miny, width, height)
     ///
     /// # Examples
     ///
@@ -38,39 +38,86 @@ impl Document {
         }
     }
 
+    /// Add an SVG Element to the Document
+    ///
+    /// # Arguments
+    ///
+    /// * `element` - The SVG element to add to the document
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use svg_composer::document::Document;
+    /// use svg_composer::element::circle::Circle;
+    /// use svg_composer::element::Element;
+    ///
+    /// let mut document = Document::new(Vec::<Box<dyn Element>>::new(), None);
+    /// document.add_element(Box::new(Circle::new()));
+    /// ```
     pub fn add_element(&mut self, element: Box<dyn Element>) -> &Self {
         self.elements.push(element);
         self
     }
 
+    /// Add several SVG Element to the Document
+    ///
+    /// # Arguments
+    ///
+    /// * `element` - The list of SVG elements to add to the document
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use svg_composer::document::Document;
+    /// use svg_composer::element::circle::Circle;
+    /// use svg_composer::element::Element;
+    ///
+    /// let mut document = Document::new(Vec::<Box<dyn Element>>::new(), None);
+    /// document.add_elements(vec![Box::new(Circle::new()), Box::new(Circle::new())]);
+    /// ```
     pub fn add_elements(&mut self, mut elements: Vec<Box<dyn Element>>) -> &Self {
         self.elements.append(&mut elements);
         self
     }
 
+    /// Renders the SVG file as a string. This string can then be saved as a regular SVG file.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use svg_composer::document::Document;
+    /// use svg_composer::element::circle::Circle;
+    /// use svg_composer::element::Element;
+    ///
+    /// let mut document = Document::new(vec![Box::new(Circle::new().set_pos((50., 50.)).set_radius(10.))], Some([0., 0., 100., 100.]));
+    /// let svg_file_content = document.render();
+    /// let expected = "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 100 100\">\n<circle cx=\"50\" cy=\"50\" r=\"10\"/>\n</svg>\n";
+    ///
+    /// assert_eq!(expected, svg_file_content);
+    /// ```
     pub fn render(&self) -> String {
         let svg_args = vec![
             Some(format!("xmlns=\"{}\"", self.xmlns)),
             Some(format!("xmlns:xlink=\"{}\"", self.xmlns_xlink)),
-            self.view_box.and_then(|view_box| {
-                Some(format!(
+            self.view_box.map(|view_box| {
+                format!(
                     "viewBox=\"{}\"",
                     view_box
                         .iter()
                         .map(|n| n.to_string())
                         .collect::<Vec<String>>()
                         .join(" ")
-                ))
+                )
             }),
-            self.view_port.and_then(|view_port| {
-                Some(format!(
+            self.view_port.map(|view_port| {
+                format!(
                     "viewPort=\"{}\"",
                     view_port
                         .iter()
                         .map(|n| n.to_string())
                         .collect::<Vec<String>>()
                         .join(" ")
-                ))
+                )
             }),
         ]
         .iter()
