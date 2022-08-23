@@ -1,8 +1,15 @@
 [package]
 name = "svg_composer"
+description = "A strongly typed SVG composing library written in Rust. This library allows you to ensure the soundness of your generated SVGs at the compile time of your project."
 version = "0.1.0"
 authors = ["Robin Guignard-Perret <yxdunc@users.noreply.github.com>"]
 edition = "2018"
+license-file = "LICENSE.md"
+homepage = "https://github.com/yxdunc/svg_composer"
+repository = "https://github.com/yxdunc/svg_composer"
+readme = "README.md"
+keywords = ["svg", "svg-composer", "vector-graphics", "generative-art", "graphics"]
+categories = ["encoding", "graphics", "rendering::data-formats"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
